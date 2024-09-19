@@ -1,0 +1,998 @@
+Nabin Kumar Majhi
+nabinmtharu
+💻Coding
+
+baijan — 09/09/2024 12:50 PM
+Hello
+Home work for tomorrow
+
+/**
+ * Make a calculator which can do following
+ * operations.
+ * - sum
+ * - divide
+ * - multiply
+ * - subtract
+ */
+baijan — 09/10/2024 11:53 AM
+Homework
+
+Setup a nodejs project using typescript
+baijan — 09/10/2024 12:17 PM
+Read about encoding (specially utf-8 and ASCII)
+baijan — 09/10/2024 12:41 PM
+complete the deleteFile operation
+baijan — 09/10/2024 1:01 PM
+Async and sync code:
+
+// import { getSum } from "./sum";
+
+// console.log("I am ts file.");
+
+// const result = getSum(2, 3);
+// console.log("Result", result);
+
+// fs module
+import fs from "fs";
+import { getSum } from "./sum";
+
+// make a file
+fs.writeFileSync("./files/fs-intro.txt", "I read about writeFile function.", {
+  encoding: "utf-8",
+});
+
+// append content at the end of the file
+fs.appendFileSync(
+  "./files/fs-intro.txt",
+  "\nI have completed reading about this function.",
+  {
+    encoding: "utf-8",
+  }
+);
+
+// read content of a file
+const content = fs.readFileSync("./files/fs-intro.txt", {
+  encoding: "utf-8",
+});
+console.log("Content:", content);
+
+const files = new Array(1000).fill(0).map((_, idx) => `f${idx + 1}`);
+
+// for (const file of files) {
+//   console.log(`${file} started`);
+//   fs.writeFileSync(`./files/${file}.txt`, `I am ${file}`, {
+//     encoding: "utf-8",
+//   });
+//   console.log(`${file} ended`);
+// }
+
+function writeFileAsync(file: string) {
+  return new Promise((resolve) => {
+    fs.writeFile(`./files/${file}.txt`, `I am ${file}`, () => {
+      console.log(`${file} is done`);
+      resolve(file);
+    });
+  });
+}
+
+async function makeFilesAsyc() {
+  await Promise.all(
+    files.map(async (file) => {
+      await writeFileAsync(file);
+    })
+  );
+}
+
+makeFilesAsyc().then(() => {
+  console.log("all done");
+});
+ 
+Shahil Ahamad — 09/11/2024 11:13 AM
+const readline = require("readline");
+const sum = require("./operation");
+const divi = require("./operation");
+const multi = require("./operation");
+const diff = require("./operation");
+
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+rl.question("Enter any Number:\t", (num1) => {
+  rl.question("Enter any Number:\t", (num2) => {
+    console.log("Enter 1 for Sum");
+    console.log("Enter 2 for Divide");
+    console.log("Enter 3 for Multiply");
+    console.log("Enter 4 for Subtract");
+
+    rl.question("Enter the operation number:\t", (decide) => {
+      num1 = parseFloat(num1);
+      num2 = parseFloat(num2);
+
+      if (decide == 1) {
+        console.log("Sum is:  ", sum(num1, num2));
+      } else if (decide == 2) {
+        console.log("Division is:  ", divi(num1, num2));
+      } else if (decide == 3) {
+        console.log("Multiplication is:  ", multi(num1, num2));
+      } else if (decide == 4) {
+        console.log("Difference is:  ", diff(num1, num2));
+      } else {
+        console.log("Invalid operation!");
+      }
+
+      rl.close();
+    });
+  });
+});
+baijan — 09/11/2024 11:42 AM
+http server
+
+import http from "http";
+
+const server = http.createServer((request, response) => {
+  // code related server
+
+  console.log("Server Request", request.url);
+});
+
+server.listen(4000);
+baijan — 09/11/2024 12:57 PM
+Homework
+
+import http from "http";
+import fs from "fs";
+
+const server = http.createServer((request, response) => {
+  // code related server
+
+  console.log("Server Request", request.url, "Method", request.method);
+
+  if (request.url === "/about-us") {
+    const aboutPageContent = fs.readFileSync("./pages/about.html", {
+      encoding: "utf-8",
+    });
+
+    // send home page
+    response.write(aboutPageContent);
+    response.end();
+  } else if (request.url === "/") {
+    const homePageContent = fs.readFileSync("./pages/index.html", {
+      encoding: "utf-8",
+    });
+
+    // send home page
+    response.write(homePageContent);
+    response.end();
+  } else if (
+    request.url === "/contact-submission" &&
+    request.method === "POST"
+  ) {
+    // TODO: access the json body sent from client
+    response.write("Form subnitted successfully");
+    response.end();
+  } else {
+    response.writeHead(404);
+    response.write("page not found");
+    response.end();
+  }
+});
+
+server.listen(4000);
+saugat97 — 09/12/2024 10:31 AM
+hello @baijan  dai  aja mero exam xha tei vayrw aja ma class audina  so please aja ko class record gardinu na.
+baijan — 09/12/2024 11:29 AM
+import http from "http";
+import fs from "fs";
+
+const server = http.createServer((request, response) => {
+  // code related server
+
+  console.log("Server Request", request.url, "Method", request.method);
+
+  if (request.url === "/about-us") {
+    const aboutPageContent = fs.readFileSync("./pages/about.html", {
+      encoding: "utf-8",
+    });
+
+    // send home page
+    response.write(aboutPageContent);
+    response.end();
+  } else if (request.url === "/") {
+    const homePageContent = fs.readFileSync("./pages/index.html", {
+      encoding: "utf-8",
+    });
+
+    // send home page
+    response.write(homePageContent);
+    response.end();
+  } else if (
+    request.url === "/contact-submission" &&
+    request.method === "POST"
+  ) {
+    request.on("data", (chunk) => {
+      console.log("chunk received...", chunk.toString());
+    });
+
+    request.on("end", () => {
+      console.log("All data received...");
+    });
+
+    response.write("Form subnitted successfully");
+    response.end();
+  } else {
+    response.writeHead(404);
+    response.write("page not found");
+    response.end();
+  }
+});
+
+server.listen(4000);
+ 
+baijan — 09/12/2024 12:31 PM
+import http from "http";
+import fs from "fs";
+
+const server = http.createServer((request, response) => {
+  // code related server
+
+  console.log("Server Request", request.url, "Method", request.method);
+
+  if (request.url === "/about-us") {
+    const aboutPageContent = fs.readFileSync("./pages/about.html", {
+      encoding: "utf-8",
+    });
+
+    // send home page
+    response.write(aboutPageContent);
+    response.end();
+  } else if (request.url === "/") {
+    const homePageContent = fs.readFileSync("./pages/index.html", {
+      encoding: "utf-8",
+    });
+
+    // send home page
+    response.write(homePageContent);
+    response.end();
+  } else if (
+    request.url === "/contact-submission" &&
+    request.method === "POST"
+  ) {
+    let userName = "default_name";
+
+    console.log("1");
+
+    request.on("data", (chunk) => {
+      console.log("2");
+      console.log("chunk received...", chunk.toString());
+
+      const chunkData = JSON.parse(chunk.toString());
+      console.log("chunkData", chunkData);
+
+      userName = chunkData.name;
+
+      console.log("userName", userName);
+    });
+
+    request.on("end", () => {
+      console.log("3");
+      console.log("All data received...");
+
+      console.log("4");
+      // response.write(`Form submitted successfully: name - ${userName}`);
+      response.writeHead(200, "form submitted", {
+        "Content-Type": "application/json",
+      });
+      response.write(
+        JSON.stringify({
+          name: userName,
+        })
+      );
+      response.end();
+    });
+  } else {
+    response.writeHead(404);
+    response.write("page not found");
+    response.end();
+  }
+});
+
+server.listen(4000);
+\
+baijan — 09/12/2024 12:44 PM
+contact.html
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact Page</title>
+  </head>
+  <body>
+    <form>
+      <label for="Name">Name</label>
+      <input name="name" />
+      <input type="submit" name="submit" />
+    </form>
+
+    <script>
+      const form = document.querySelector("form");
+      const input = document.querySelector("input");
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        const inputValue = input.value;
+
+        const res = await fetch("/contact-submission", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: inputValue,
+          }),
+        });
+
+        const data = await res.json();
+
+        alert(`Received: ${JSON.stringify(data)}`);
+      });
+    </script>
+  </body>
+</html>
+http.ts
+
+import http from "http";
+import fs from "fs";
+
+const server = http.createServer((request, response) => {
+  // code related server
+
+  console.log("Server Request", request.url, "Method", request.method);
+
+  if (request.url === "/about-us") {
+    const aboutPageContent = fs.readFileSync("./pages/about.html", {
+      encoding: "utf-8",
+    });
+
+    // send home page
+    response.write(aboutPageContent);
+    response.end();
+  } else if (request.url === "/") {
+    const homePageContent = fs.readFileSync("./pages/index.html", {
+      encoding: "utf-8",
+    });
+
+    // send home page
+    response.write(homePageContent);
+    response.end();
+  } else if (
+    request.url === "/contact-submission" &&
+    request.method === "POST"
+  ) {
+    let userName = "default_name";
+
+    console.log("1");
+
+    request.on("data", (chunk) => {
+      console.log("2");
+      console.log("chunk received...", chunk.toString());
+
+      const chunkData = JSON.parse(chunk.toString());
+      console.log("chunkData", chunkData);
+
+      userName = chunkData.name;
+
+      console.log("userName", userName);
+    });
+
+    request.on("end", () => {
+      console.log("3");
+      console.log("All data received...");
+
+      console.log("4");
+      // response.write(`Form submitted successfully: name - ${userName}`);
+      response.writeHead(200, "form submitted", {
+        "Content-Type": "application/json",
+      });
+      response.write(
+        JSON.stringify({
+          name: userName,
+        })
+      );
+      response.end();
+    });
+  } else if (request.url === "/contact") {
+    const contactPageContent = fs.readFileSync("./pages/contact.html", {
+      encoding: "utf-8",
+    });
+
+    response.write(contactPageContent);
+    response.end();
+  } else {
+    response.writeHead(404);
+    response.write("page not found");
+    response.end();
+  }
+});
+
+server.listen(4000);
+baijan — 09/12/2024 12:53 PM
+Homework for sunday
+
+Create a todo app with following routes
+
+create-todo
+get-todo
+delete-todo
+update-todo
+get-all-todos
+Rajan Gaire — 09/15/2024 10:31 AM
+@baijan dai mero ajha bahira jani kaam paryo tei bhayera class auna namilni bhayo
+baijan — 09/15/2024 10:39 AM
+ok
+baijan — 09/15/2024 11:19 AM
+https://meet.google.com/fop-pkyz-vgf
+Parmila — 09/15/2024 12:13 PM
+@baijan dai aja kei kam le class aauna mileyna
+sorry for late inform dai @baijan
+baijan — 09/15/2024 12:40 PM
+github link for todo app using http module
+https://github.com/skillprompt/todo-http-module
+GitHub
+GitHub - skillprompt/todo-http-module: this is todo app using http ...
+this is todo app using http module in nodejs. Contribute to skillprompt/todo-http-module development by creating an account on GitHub.
+GitHub - skillprompt/todo-http-module: this is todo app using http ...
+baijan — 09/15/2024 12:52 PM
+Video Links
+Request Body in http module: https://youtu.be/KBuhuvMmF4U
+YouTube
+SkillPrompt
+request body - Backend Class - Sept 15th, 2024
+Image
+baijan
+ pinned 
+a message
+ to this channel. See all 
+pinned messages
+.
+ — 09/15/2024 12:52 PM
+baijan — 09/16/2024 11:27 AM
+Updating an element in an array
+
+const nums = [1, 10, 2, 4, 5, 7];
+
+// i want to update 2 -> 8
+
+const updatedNums = nums.map((num) => {
+  if (num === 2) {
+    return 8;
+  } else {
+    return num;
+  }
+});
+
+console.log("nums", nums);
+console.log("updatedNums", updatedNums);
+baijan — 09/16/2024 12:02 PM
+nodemon setup
+
+nodemon --watch "src/**" --ext "ts,json" --ignore "src/**/*.spec.ts" --exec "ts-node src/index.ts"
+baijan — 09/17/2024 9:14 AM
+expressjs intro code
+
+import express from "express";
+import { readFileSync } from "fs";
+import bodyParser from "body-parser";
+
+const PORT = 4000;
+
+const app = express();
+
+app.post("/create-1", (req, res) => {
+  const body = req.body;
+
+  console.log("body", body);
+  res.json({
+    message: "created",
+  });
+});
+
+app.use(bodyParser.json());
+
+app.get("/", (req, res) => {
+  const query = req.query;
+  console.log("query name", query);
+
+  const body = req.body;
+
+  console.log("body", body);
+
+  const homePage = readFileSync("./templates/index.html", {
+    encoding: "utf-8",
+  });
+  res.send(homePage + query?.name || "no name");
+});
+
+app.post("/create-2", (req, res) => {
+  const body = req.body;
+
+  console.log("body", body);
+  res.json({
+    message: "created",
+  });
+});
+
+app.listen(PORT, () => {
+  console.log("Express app listening on port:", PORT);
+});
+kiranaryal — 09/17/2024 11:00 AM
+@baijan dai aja kam le kapilbastu aaxu tei vayera auna vayaudina hai ma class
+baijan — 09/17/2024 11:36 AM
+Error handling 1
+import express from "express";
+import { readFileSync } from "fs";
+import bodyParser from "body-parser";
+
+const PORT = 4000;
+
+const app = express();
+
+app.post("/create-1", (req, res) => {
+  const body = req.body;
+
+  console.log("body", body);
+  res.json({
+    message: "created",
+  });
+});
+
+app.use(bodyParser.json());
+
+app.get("/", (req, res) => {
+  try {
+    const query = req.query;
+    console.log("query name", query);
+
+    const body = req.body;
+
+    console.log("body", body);
+
+    const homePage = readFileSync("./templates/index1.html", {
+      encoding: "utf-8",
+    });
+    res.send(homePage + query?.name || "no name");
+  } catch (error) {
+    console.log("error", error);
+    res.status(500).json({
+      message: "Failed to get the data",
+    });
+  }
+});
+
+app.post("/create-2", (req, res) => {
+  const body = req.body;
+
+  console.log("body", body);
+  res.json({
+    message: "created",
+  });
+});
+
+app.listen(PORT, () => {
+  console.log("Express app listening on port:", PORT);
+});
+baijan — 09/17/2024 12:05 PM
+express middleware basic
+
+import express, { NextFunction, Request, Response } from "express";
+import { readFileSync } from "fs";
+import bodyParser from "body-parser";
+
+const PORT = 4000;
+
+const app = express();
+
+function myFirstMiddleware(req: Request, res: Response, next: NextFunction) {
+  console.log("my first middleware is called");
+  next();
+}
+
+function handleGetRouteMiddleware(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const query = req.query;
+    console.log("query name", query);
+
+    const body = req.body;
+
+    console.log("body", body);
+
+    const homePage = readFileSync("./templates/index.html", {
+      encoding: "utf-8",
+    });
+    res.send(homePage + query?.name || "no name");
+  } catch (error) {
+    console.log("error", error);
+    res.status(500).json({
+      message: "Failed to get the data",
+    });
+  }
+}
+
+app.post("/create-1", (req, res) => {
+  const body = req.body;
+
+  console.log("body", body);
+  res.json({
+    message: "created",
+  });
+});
+
+app.use(bodyParser.json());
+
+app.get("/", myFirstMiddleware, handleGetRouteMiddleware);
+
+app.post("/create-2", (req, res) => {
+  try {
+    const body = req.body;
+
+    console.log("body", body);
+    res.json({
+      message: "created",
+    });
+  } catch (error) {
+    console.log("failed to create 2 api", error);
+    res.status(500).json({
+      message: "failed to created api number 2",
+    });
+  }
+});
+
+// middleware to handle global errors
+
+app.listen(PORT, () => {
+  console.log("Express app listening on port:", PORT);
+});
+baijan — 09/17/2024 12:43 PM
+```ts
+import express, { NextFunction, Request, Response } from "express";
+import { readFileSync } from "fs";
+import bodyParser from "body-parser";
+
+const PORT = 4000;
+Expand
+message.txt
+3 KB
+baijan — 09/17/2024 2:12 PM
+todo app http module video
+https://www.youtube.com/watch?v=-pdikC-mDhk
+YouTube
+SkillPrompt
+todo app http module
+Image
+baijan
+ pinned 
+a message
+ to this channel. See all 
+pinned messages
+.
+ — 09/17/2024 2:12 PM
+baijan — 09/17/2024 2:30 PM
+expressjs and introduction
+https://youtu.be/F_cp16vilx0
+YouTube
+SkillPrompt
+expressjs introduction and setup
+Image
+baijan
+ pinned 
+a message
+ to this channel. See all 
+pinned messages
+.
+ — 09/17/2024 2:30 PM
+baijan — 09/17/2024 2:41 PM
+middlewares and error handling in expressjs
+https://youtu.be/yiqbkUzZBTo
+YouTube
+SkillPrompt
+middlewares and error handling in expressjs
+Image
+baijan
+ pinned 
+a message
+ to this channel. See all 
+pinned messages
+.
+ — 09/17/2024 2:42 PM
+baijan — 09/17/2024 2:43 PM
+hi guys, i have uploaded all the videos and pinned them.
+baijan — Yesterday at 12:14 PM
+todo-controller.ts
+import { NextFunction, Request, Response } from "express";
+import { TodoModel } from "../models/todo-model";
+
+/**
+ * This file contains code related to todo controller
+ */
+
+export function getTodoController(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  const todoId = req.query.todoId;
+
+  if (!todoId) {
+    next("Please provide valid todoId");
+    return;
+  }
+
+  const myTodoModel = new TodoModel();
+
+  const todo = myTodoModel.getTodo(parseInt(todoId as string));
+
+  if (!todo) {
+    res.status(404).json({
+      messagge: "todo not found",
+    });
+    return;
+  }
+
+  res.json({
+    data: todo,
+  });
+}
+
+function createTodoController() {
+  //
+}
+
+function updateTodoController() {
+  //
+}
+
+function deleteTodoController() {
+  //
+}
+
+function getAllTodoController() {
+  //
+}
+todo-model.ts
+
+type TTodo = {
+  id: number;
+  name: string;
+  status: "not_started" | "in_progress" | "done";
+};
+
+const todos: TTodo[] = [
+  {
+    id: 1,
+    name: "Reading about mvc pattern",
+    status: "in_progress",
+  },
+];
+
+export class TodoModel {
+  constructor() {
+    console.log("todo constructor is called");
+  }
+
+  getTodo(todoId: number) {
+    const todo = todos.find((todo) => todo.id === todoId);
+    return todo;
+  }
+}
+main.ts
+import express from "express";
+import { getTodoController } from "./controllers/todo-controller";
+
+const PORT = 4000;
+
+const app = express();
+
+// todo routes
+
+// get-todo
+
+// request -> controller -> model
+// controller -> response
+app.get("/get-todo", getTodoController);
+// // create-todo
+// app.post('/create-todo', createTodoController);
+// // update-todo
+// app.post('/update-todo', updateTodoController);
+// // delete-todo
+// app.post('/delete-todo', deleteTodoController);
+// // get-all-todos
+// app.post('/get-all-todos', getAllTodoController);
+
+app.listen(PORT, () => {
+  console.log(`Listening on port ${PORT}`);
+});
+baijan — Yesterday at 1:02 PM
+Final Code:
+
+main.ts
+```ts
+import express from "express";
+import bodyParser from "body-parser";
+Expand
+message.txt
+3 KB
+baijan — Yesterday at 4:34 PM
+Model Controller Video
+https://youtu.be/4QhgKwOAFtA
+YouTube
+SkillPrompt
+model and controller in expressjs 1
+Image
+baijan
+ pinned 
+a message
+ to this channel. See all 
+pinned messages
+.
+ — Yesterday at 4:34 PM
+﻿
+Final Code:
+
+main.ts
+```ts
+import express from "express";
+import bodyParser from "body-parser";
+import {
+  createTodoController,
+  getTodoController,
+} from "./controllers/todo-controller";
+
+const PORT = 4000;
+
+const app = express();
+
+app.use(bodyParser.json());
+
+// todo routes
+
+// get-todo
+
+// request -> controller -> model
+// controller -> response
+app.get("/get-todo/:todoId", getTodoController);
+// // create-todo
+app.post("/create-todo", createTodoController);
+// // update-todo
+// app.post('/update-todo', updateTodoController);
+// // delete-todo
+// app.post('/delete-todo', deleteTodoController);
+// // get-all-todos
+// app.post('/get-all-todos', getAllTodoController);
+
+app.listen(PORT, () => {
+  console.log(`Listening on port ${PORT}`);
+});
+
+```
+
+todo-controller.ts
+```ts
+import { NextFunction, Request, Response } from "express";
+import { TodoModel } from "../models/todo-model";
+
+/**
+ * This file contains code related to todo controller
+ */
+
+export function getTodoController(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  const todoId = req.params.todoId;
+
+  if (!todoId) {
+    next("Please provide valid todoId");
+    return;
+  }
+
+  const myTodoModel = new TodoModel();
+
+  const todo = myTodoModel.getTodo(parseInt(todoId as string));
+
+  if (!todo) {
+    res.status(404).json({
+      messagge: "todo not found",
+    });
+    return;
+  }
+
+  res.json({
+    data: todo,
+  });
+}
+
+export function createTodoController(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  const body = req.body;
+
+  const name = body.name;
+  const status = body.status;
+
+  // !FIXME: write error handling and data validation
+
+  const myTodoModel = new TodoModel();
+  const createdTodo = myTodoModel.createTodo(name, status);
+
+  res.status(201).json({
+    data: createdTodo,
+    message: "Todo is created successfully!!",
+  });
+}
+
+function updateTodoController() {
+  //
+}
+
+function deleteTodoController() {
+  //
+}
+
+function getAllTodoController() {
+  //
+}
+```
+
+todo-model.ts
+```ts
+type TTodoStatus = "not_started" | "in_progress" | "done";
+
+type TTodo = {
+  id: number;
+  name: string;
+  status: TTodoStatus;
+};
+
+const todos: TTodo[] = [
+  {
+    id: 1,
+    name: "Reading about mvc pattern",
+    status: "in_progress",
+  },
+];
+
+export class TodoModel {
+  constructor() {
+    console.log("todo constructor is called");
+  }
+
+  getTodo(todoId: number) {
+    const todo = todos.find((todo) => todo.id === todoId);
+    return todo;
+  }
+
+  createTodo(name: string, status: TTodoStatus) {
+    const newTodo: TTodo = {
+      id: todos.length + 1,
+      name,
+      status,
+    };
+    todos.push(newTodo);
+
+    return newTodo;
+  }
+}
+ ```
+message.txt
+3 KB
