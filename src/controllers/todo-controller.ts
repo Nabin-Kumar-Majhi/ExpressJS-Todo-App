@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { TodoModel } from "../models/todo-model";
 import { parse } from "path";
+import { getTodoView } from "../views/get-todo";
 
 /**
  * This file contains code related to todo controller
@@ -28,9 +29,15 @@ export function getTodoController(
     return;
   }
 
-  res.json({
-    data: todo,
-  });
+  // res.json({
+    // data: todo,
+  // });
+
+  // function to generate html string from todo data
+
+  const todoView = getTodoView(todo);
+
+  res.send(todoView);
 }
 
 export function createTodoController(
